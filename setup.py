@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-import client 
+import ribida 
 
 METADATA = dict(
     name='ribida',
-    version=client.__version__,
+    version=ribida.__version__,
     author='chen chiyuan',
     author_email='chenchiyuan03@.com',
     description='kagalaska client',
