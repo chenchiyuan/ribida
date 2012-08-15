@@ -23,6 +23,9 @@ except Exception:
   WORDSEG_UNIX_DOMAIN = SETTINGS['WORDSEG_SOCKET']
   RELATIONS_UNIX_DOMAIN =  SETTINGS['RELATION_SOCKET']
 
+BUFFER_SIZE = 1024
+MAX_SIZE = 65536
+
 class SocketProxy(object):
   def __init__(self, connect_to, type=socket.AF_UNIX,
                stream=socket.SOCK_STREAM, func=None):
@@ -36,8 +39,10 @@ class SocketProxy(object):
   def sendall(self, str):
     self.socket.sendall(str)
 
-  def receive(self, max=4096):
-    return self.socket.recv(max)
+  def receive(self, size=BUFFER_SIZE):
+    size = size if size < MAX_SIZE else MAX_SIZE
+    data = self.socket.recv(size)
+    return data
 
   def format(self, str_list):
     if not str_list:
@@ -54,10 +59,14 @@ class SocketProxy(object):
 
     str = to_str(str)
 
+    if len(str) > MAX_SIZE:
+      return {}
+
     self.connect()
     self.sendall(str)
+    size = len(str) * 10
 
-    response_str = self.receive(max=receive_length(str))
+    response_str = self.receive(size)
     self.close()
 
     return self.format_fun(response_str)
