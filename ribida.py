@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.1'
+__version__ = '1.2'
 
 from utils import to_str, receive_length
 import socket
@@ -25,6 +25,7 @@ except Exception:
 
 BUFFER_SIZE = 1024
 MAX_SIZE = 65536
+MAX_CONTENT = 20001
 
 class SocketProxy(object):
   def __init__(self, connect_to, type=socket.AF_UNIX,
@@ -58,7 +59,6 @@ class SocketProxy(object):
       str = json.dumps(str)
 
     str = to_str(str)
-
     if len(str) > MAX_SIZE:
       return {}
 
@@ -78,7 +78,7 @@ class API(object):
   def parse_words(self, title=None, content=None, imagine=True, **kwargs):
     request_dict = {
       'title': title,
-      'content': content,
+      'content': content[:MAX_CONTENT],
       'imagine': imagine
     }
     request_dict.update(kwargs)
