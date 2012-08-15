@@ -3,7 +3,7 @@
 
 from __future__ import division, unicode_literals, print_function
 
-receive_length = lambda str: len(str) * 10 if len(str) > 256 else 4096
+receive_length = lambda str: len(str) * 10
 
 def to_unicode(obj):
   if isinstance(obj, str):
