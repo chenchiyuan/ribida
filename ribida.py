@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.2.1'
+__version__ = '1.3'
 
 from utils import to_str, receive_length
 import socket
