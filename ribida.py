@@ -2,14 +2,14 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.2'
+__version__ = '1.2.1'
 
 from utils import to_str, receive_length
 import socket
 import json
 import os
 
-HOME = '/tmp/'
+HOME = '/var/run/'
 SETTINGS = {
   'WORDSEG_SOCKET': os.path.join(HOME, 'wordseg.sock'),
   'RELATION_SOCKET': os.path.join(HOME, 'relation.sock'),
