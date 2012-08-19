@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 
 from utils import to_str
 import socket
@@ -32,10 +32,12 @@ MAX_CONTENT = 20001
 
 class SocketProxy(object):
   def __init__(self, connect_to, type=socket.AF_UNIX,
-               stream=socket.SOCK_STREAM, func=None):
+               stream=socket.SOCK_STREAM, func=None,
+               force_max=False):
     self.connect_to = connect_to
     self.socket = socket.socket(type, stream)
     self.format_fun = func if func else self.format
+    self.force_max = force_max
 
   def connect(self):
     self.socket.connect(self.connect_to)
@@ -67,7 +69,7 @@ class SocketProxy(object):
 
     self.connect()
     self.sendall(str)
-    size = len(str) * 10
+    size = len(str) * 10 if not self.force_max else MAX_SIZE
 
     response_str = self.receive(size)
     self.close()
@@ -107,6 +109,6 @@ class API(object):
     request_dict.update(kwargs)
 
     connect_to = self.connect_to if self.connect_to else PLACEINFO_UNIX_DOMAIN
-    sock = SocketProxy(connect_to=connect_to)
+    sock = SocketProxy(connect_to=connect_to, force_max=True)
     return sock.process(request_dict)
 
