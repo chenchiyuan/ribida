@@ -2,9 +2,9 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3'
+__version__ = '1.3.1'
 
-from utils import to_str, receive_length
+from utils import to_str
 import socket
 import json
 import os
@@ -12,16 +12,19 @@ import os
 HOME = '/var/run/'
 SETTINGS = {
   'WORDSEG_SOCKET': os.path.join(HOME, 'wordseg.sock'),
-  'RELATION_SOCKET': os.path.join(HOME, 'relation.sock'),
+  'RELATIONS_SOCKET': os.path.join(HOME, 'relations.sock'),
+  'PLACEINFO_SOCKET': os.path.join(HOME, 'place_info.sock')
 }
 
 try:
   import django
   WORDSEG_UNIX_DOMAIN = getattr(django.conf.settings, 'WORDSEG_SOCKET', SETTINGS['WORDSEG_SOCKET'])
-  RELATIONS_UNIX_DOMAIN = getattr(django.conf.settings, 'RELATION_SOCKET', SETTINGS['RELATION_SOCKET'])
+  RELATIONS_UNIX_DOMAIN = getattr(django.conf.settings, 'RELATIONS_SOCKET', SETTINGS['RELATIONS_SOCKET'])
+  PLACEINFO_UNIX_DOMAIN = getattr(django.conf.settings, 'PLACEINFO_SOCKET', SETTINGS['PLACEINFO_SOCKET'])
 except Exception:
   WORDSEG_UNIX_DOMAIN = SETTINGS['WORDSEG_SOCKET']
-  RELATIONS_UNIX_DOMAIN =  SETTINGS['RELATION_SOCKET']
+  RELATIONS_UNIX_DOMAIN =  SETTINGS['RELATIONS_SOCKET']
+  PLACEINFO_UNIX_DOMAIN = SETTINGS['PLACEINFO_SOCKET']
 
 BUFFER_SIZE = 1024
 MAX_SIZE = 65536
@@ -96,3 +99,14 @@ class API(object):
     connect_to = self.connect_to if self.connect_to else RELATIONS_UNIX_DOMAIN
     sock = SocketProxy(connect_to=connect_to)
     return sock.process(request_dict)
+
+  def get_place_info(self, slug, **kwargs):
+    request_dict = {
+      'slug': slug,
+    }
+    request_dict.update(kwargs)
+
+    connect_to = self.connect_to if self.connect_to else PLACEINFO_UNIX_DOMAIN
+    sock = SocketProxy(connect_to=connect_to)
+    return sock.process(request_dict)
+
