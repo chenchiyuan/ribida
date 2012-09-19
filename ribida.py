@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.3'
+__version__ = '1.3.4'
 
 from utils import to_str
 import socket
@@ -102,9 +102,9 @@ class API(object):
     sock = SocketProxy(connect_to=connect_to)
     return sock.process(request_dict)
 
-  def get_place_info(self, slug, **kwargs):
+  def get_place_info(self, slug_or_slugs, **kwargs):
     request_dict = {
-      'slug': slug,
+      'slugs': slug_or_slugs,
     }
     request_dict.update(kwargs)
 
