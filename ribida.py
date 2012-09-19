@@ -2,14 +2,14 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.4'
+__version__ = '1.3.5'
 
 from utils import to_str
 import socket
 import json
 import os
 
-HOME = '/var/run/kagalaska/'
+HOME = '/tmp/'
 SETTINGS = {
   'WORDSEG_SOCKET': os.path.join(HOME, 'wordseg.sock'),
   'RELATIONS_SOCKET': os.path.join(HOME, 'relations.sock'),
@@ -81,6 +81,9 @@ class API(object):
     self.connect_to = connect_to
 
   def parse_words(self, title=None, content=None, imagine=True, **kwargs):
+    """
+    Parse words based on title and content
+    """
     request_dict = {
       'title': title,
       'content': content[:MAX_CONTENT],
@@ -93,6 +96,9 @@ class API(object):
     return sock.process(request_dict)
 
   def traverse(self, words, **kwargs):
+    """
+    Get tag relations.
+    """
     request_dict = {
       'words': words
     }
@@ -103,6 +109,11 @@ class API(object):
     return sock.process(request_dict)
 
   def get_place_info(self, slug_or_slugs, **kwargs):
+    """
+    Can search place_info by place_slug or slugs.
+    Waring: socket is limit to 65536, so when you search
+    a log of data, it may cause exception.
+    """
     request_dict = {
       'slugs': slug_or_slugs,
     }
