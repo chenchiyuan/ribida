@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.7'
+__version__ = '1.3.8'
 
 from utils import to_str
 import socket
@@ -124,5 +124,21 @@ class API(object):
 
     connect_to = self.connect_to if self.connect_to else PLACEINFO_UNIX_DOMAIN
     sock = SocketProxy(connect_to=connect_to, force_max=True)
+    return sock.process(request_dict)
+
+  def tag(self, name, func_name, score=6.0, parents=[], equal_to='', items=[]):
+    if not func_name in ('update', 'add', 'remove'):
+      return ''
+
+    request_dict = {
+      'name': name,
+      'func_name': func_name,
+      'score': score,
+      'parents': parents,
+      'equal_to': equal_to,
+      'items': items
+    }
+    connect_to = self.connect_to if self.connect_to else WORDSEG_UNIX_DOMAIN
+    sock = SocketProxy(connect_to=connect_to)
     return sock.process(request_dict)
 
