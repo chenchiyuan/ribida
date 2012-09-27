@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.6'
+__version__ = '1.3.7'
 
 from utils import to_str
 import socket
@@ -80,12 +80,12 @@ class API(object):
   def __init__(self, connect_to=None):
     self.connect_to = connect_to
 
-  def parse_words(self, title=None, content=None, imagine=True, **kwargs):
+  def parse_words(self, title='', content='', imagine=True, **kwargs):
     """
     Parse words based on title and content
     """
     request_dict = {
-      'func_name': 'parse',
+      'func_name': 'rank',
       'title': title,
       'content': content[:MAX_CONTENT],
       'imagine': imagine
