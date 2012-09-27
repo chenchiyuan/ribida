@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.5'
+__version__ = '1.3.6'
 
 from utils import to_str
 import socket
@@ -85,6 +85,7 @@ class API(object):
     Parse words based on title and content
     """
     request_dict = {
+      'func_name': 'parse',
       'title': title,
       'content': content[:MAX_CONTENT],
       'imagine': imagine
@@ -100,6 +101,7 @@ class API(object):
     Get tag relations.
     """
     request_dict = {
+      'func_name': 'traverse',
       'words': words
     }
     request_dict.update(kwargs)
@@ -115,6 +117,7 @@ class API(object):
     a log of data, it may cause exception.
     """
     request_dict = {
+      'func_name': 'get_by_slug',
       'slugs': slug_or_slugs,
     }
     request_dict.update(kwargs)
