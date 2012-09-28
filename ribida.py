@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.3.8'
+__version__ = '1.4.0'
 
 from utils import to_str
 import socket
@@ -127,7 +127,7 @@ class API(object):
     return sock.process(request_dict)
 
   def tag(self, name, func_name, score=6.0, parents=[], equal_to='', items=[]):
-    if not func_name in ('update', 'add', 'remove'):
+    if not func_name in ('update', 'add', 'remove', 'get'):
       return ''
 
     request_dict = {
