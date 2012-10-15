@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.4.3'
+__version__ = '1.4.4'
 
 from utils import to_str
 import socket
@@ -166,5 +166,21 @@ class API(object):
     sock = SocketProxy(connect_to=connect_to, func=format)
     return sock.process(request_dict)
 
+  def update_normal(self, slug, **kwargs):
+    request_dict = {
+      'slug': slug,
+      'func_name': 'place_update',
+    }
+    request_dict.update(kwargs)
+    connect_to = self.connect_to if self.connect_to else WORDSEG_UNIX_DOMAIN
+
+    def format(str_list):
+      if not str_list:
+        return {'success': False}
+      else:
+        return json.loads(str_list.decode('utf-8'))
+
+    sock = SocketProxy(connect_to=connect_to, func=format)
+    return sock.process(request_dict)
 
 
