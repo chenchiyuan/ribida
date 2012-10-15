@@ -2,7 +2,7 @@
 # __author__ = chenchiyuan
 from __future__ import division, unicode_literals, print_function
 
-__version__ = '1.4.4'
+__version__ = '1.4.5'
 
 from utils import to_str
 import socket
@@ -169,7 +169,7 @@ class API(object):
   def update_normal(self, slug, **kwargs):
     request_dict = {
       'slug': slug,
-      'func_name': 'place_update',
+      'func_name': 'normal_update',
     }
     request_dict.update(kwargs)
     connect_to = self.connect_to if self.connect_to else WORDSEG_UNIX_DOMAIN
