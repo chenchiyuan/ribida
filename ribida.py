@@ -126,7 +126,7 @@ class API(object):
     sock = SocketProxy(connect_to=connect_to, force_max=True)
     return sock.process(request_dict)
 
-  def tag(self, name, func_name, score=6.0, parents=[], equal_to='', items=[]):
+  def tag(self, name='', func_name='', score=6.0, parents=[], equal_to='', items=[]):
     if not func_name in ('update', 'add', 'remove', 'get'):
       return {'success': False }
 
@@ -149,7 +149,7 @@ class API(object):
     sock = SocketProxy(connect_to=connect_to, func=format)
     return sock.process(request_dict)
 
-  def update_place(self, slug, **kwargs):
+  def update_place(self, slug='', **kwargs):
     request_dict = {
       'slug': slug,
       'func_name': 'place_update',
@@ -166,7 +166,7 @@ class API(object):
     sock = SocketProxy(connect_to=connect_to, func=format)
     return sock.process(request_dict)
 
-  def update_normal(self, slug, **kwargs):
+  def update_normal(self, slug='', **kwargs):
     request_dict = {
       'slug': slug,
       'func_name': 'normal_update',
