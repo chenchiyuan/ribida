@@ -116,15 +116,24 @@ class API(object):
     Waring: socket is limit to 65536, so when you search
     a log of data, it may cause exception.
     """
-    request_dict = {
-      'func_name': 'get_by_slug',
-      'slugs': slug_or_slugs,
-    }
-    request_dict.update(kwargs)
 
-    connect_to = self.connect_to if self.connect_to else PLACEINFO_UNIX_DOMAIN
-    sock = SocketProxy(connect_to=connect_to, force_max=True)
-    return sock.process(request_dict)
+    slice = 5
+    if not isinstance(slug_or_slugs, list):
+      slug_or_slugs = [slug_or_slugs]
+
+    result = {}
+    slug_list = [slug_or_slugs[i:i+slice] for i in range(0, len(slug_or_slugs), slice)] #切片
+    for slugs in slug_list:
+      request_dict = {
+        'func_name': 'get_by_slug',
+        'slugs': slugs,
+      }
+      request_dict.update(kwargs)
+
+      connect_to = self.connect_to if self.connect_to else PLACEINFO_UNIX_DOMAIN
+      sock = SocketProxy(connect_to=connect_to, force_max=True)
+      result.update(sock.process(request_dict))
+    return result
 
   def tag(self, name='', func_name='', score=6.0, parents=[], equal_to='', items=[]):
     if not func_name in ('update', 'add', 'remove', 'get'):
