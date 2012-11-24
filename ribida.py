@@ -80,6 +80,20 @@ class API(object):
   def __init__(self, connect_to=None):
     self.connect_to = connect_to
 
+  def simple_parse(self, content, **kwargs):
+    """
+    Just parse words
+    """
+    request_dict = {
+      'func_name': 'parse',
+      'words': content
+    }
+    request_dict.update(kwargs)
+
+    connect_to = self.connect_to if self.connect_to else WORDSEG_UNIX_DOMAIN
+    sock = SocketProxy(connect_to=connect_to)
+    return sock.process(request_dict)
+
   def parse_words(self, title='', content='', imagine=True, **kwargs):
     """
     Parse words based on title and content
